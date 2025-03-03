@@ -2,7 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\EnsureEmailIsVerified;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+
 
 class Kernel extends HttpKernel
 {
@@ -36,6 +38,9 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+            // 来限制用户必须去验证邮箱
+            EnsureEmailIsVerified::class,
         ],
 
         'api' => [
