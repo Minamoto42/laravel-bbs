@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Models\Topic;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
@@ -22,12 +23,16 @@ class TopicsController extends Controller
 
     /**
      * Show topics list.
+     * @param Request $request
+     * @param Topic $topic
      *
      * @return Factory|View|Application
      */
-    public function index(): Factory|View|Application
+    public function index(Request $request, Topic $topic): Factory|View|Application
     {
-        $topics = Topic::with('user', 'category')->paginate(30);
+        $topics = $topic->withOrder($request->order)
+            ->with('user', 'category') // 使用 with 方法预加载防止 N+1 问题
+            ->paginate(20);
         return view('topics.index', compact('topics'));
     }
 
