@@ -14,3 +14,5 @@ yarn-error.log
 /.vscode
 # Ignore user's avatar uploads
 /public/uploads/images/avatars/*
+# Ignore topic images
+/public/uploads/images/topics/*

@@ -10,9 +10,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title')</title>
-
+    <meta name="description" content="@yield('description', 'Mina\'s bbs')">
+    <meta name="slug" content="@yield('slug', env('APP_URL'))">
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+
+    @yield('styles')
 
 </head>
 
@@ -35,5 +38,7 @@
 <!-- Scripts -->
 <script src="{{ mix('js/app.js') }}"></script>
 </body>
+
+@yield('scripts')
 
 </html>

@@ -23,3 +23,16 @@ function category_nav_active(int $category_id): string
     return active_class((if_route('categories.show') && if_route_param('category', $category_id)));
 }
 
+/**
+ * Make excerpt for the topic body.
+ *
+ * @param string $value
+ * @param int $length
+ * @return \Illuminate\Support\Stringable|mixed
+ */
+function make_excerpt(string $value, int $length = 200): mixed
+{
+    $excerpt = trim(preg_replace('/\r\n|\r|\n+/', ' ', strip_tags($value)));
+    return str()->limit($excerpt, $length);
+}
+
