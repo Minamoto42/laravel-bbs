@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 
 /**
@@ -21,11 +22,18 @@ use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
  * @property string $avatar
  * @property string $introduction
  * @property Reply replies
+ * @property Topic topics
+ * @property int notification_count
  */
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, MustVerifyEmailTrait;
+    use HasApiTokens, HasFactory, MustVerifyEmailTrait;
+
+    use Notifiable {
+        notify as protected laravelNotify;
+    }
+
 
     /**
      * The attributes that are mass assignable.
@@ -88,5 +96,41 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isAuthorOf(object $model): bool
     {
         return $this->id == $model->user_id;
+    }
+    /**
+     * Send the notification to the user.
+     *
+     * @param mixed $instance
+     * @return void
+     */
+    public function notify($instance): void
+    {
+        // If the notification to him is the same as the current user, no need to notify him.
+        // If the notification instance is VerifyEmail, no need to notify him.
+        if ($this->id == Auth::id() && get_class($instance) == 'Illuminate\Auth\Notifications\VerifyEmail') {
+            return;
+        }
+
+        // Only notification channel is database, we will send the notification.
+        if (method_exists($instance, 'toDatabase')) {
+            $this->increment('notification_count');
+        }
+
+        $this->laravelNotify($instance);
+    }
+
+    /**
+     * Mark the notification as read.
+     *
+     * @return void
+     */
+    public function markAsRead(): void
+    {
+        $this->notification_count = 0;
+        $this->save();
+
+        // This is a method of the Notifiable trait from Laravel.
+        // It will mark all the unread notifications as read.
+        $this->unreadNotifications->markAsRead();
     }
 }
