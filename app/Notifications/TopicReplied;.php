@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TopicReplied extends Notification
+class TopicReplied extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -32,8 +32,7 @@ class TopicReplied extends Notification
      */
     public function via(mixed $notifiable): array
     {
-        // return ['mail'];
-        return ['database'];
+        return ['database', 'mail'];
     }
 
     /**
@@ -69,10 +68,12 @@ class TopicReplied extends Notification
      */
     public function toMail(mixed $notifiable): MailMessage
     {
+        // $this->reply->topic->slug  http://127.0.0.1:8000/topics/1
+        // $this->reply->topic->slug . '#reply' . $this->reply->id  http://127.0.0.1:8000/topics/1#reply1
+        $url = $this->reply->topic->slug . '#reply' . $this->reply->id;
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->line('Someone replied to your topic.')
+            ->action('Click to view the reply', $url);
     }
 
     /**
