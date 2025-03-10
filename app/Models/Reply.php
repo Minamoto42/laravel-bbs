@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @package App\Models
  *
  * @property int id
- * @property string content
+ * @property string message
  * @property int topic_id
  * @property int user_id
  * @property Topic topic
@@ -25,7 +25,7 @@ class Reply extends Model
      *
      * @var array
      */
-    protected $fillable = ['content'];
+    protected $fillable = ['message'];
 
     /**
      * A reply belongs to a topic.

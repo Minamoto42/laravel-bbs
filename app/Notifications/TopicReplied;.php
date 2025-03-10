@@ -50,7 +50,7 @@ class TopicReplied extends Notification implements ShouldQueue
         // 这些数据足以描述此通知所需的信息, 谁回复了哪个帖子, 回复的内容是什么
         return [
             'reply_id' => $this->reply->id, // 回复的内容
-            'reply_content' => $this->reply->content, // 回复的内容
+            'reply_content' => $this->reply->message, // 回复的内容
             'user_id' => $this->reply->user_id, // 谁
             'user_name' => $this->reply->user->name, // 谁
             'user_avatar' => $this->reply->user->avatar, // 谁

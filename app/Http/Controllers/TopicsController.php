@@ -76,7 +76,7 @@ class TopicsController extends Controller
         $topic->fill($request->all());
         $topic->user_id = Auth::id();
         $topic->save();
-        return redirect()->route('topics.show', $topic->id)->with('message', 'Created successfully.');
+        return redirect()->route('topics.show', $topic->id)->with('success', 'Created successfully.');
     }
 
     /**
@@ -106,7 +106,7 @@ class TopicsController extends Controller
         $this->authorize('update', $topic);
         $topic->update($request->all());
 
-        return redirect()->route('topics.show', $topic->id)->with('message', 'Updated successfully.');
+        return redirect()->route('topics.show', $topic->id)->with('success', 'Updated successfully.');
     }
 
     /**
@@ -121,7 +121,7 @@ class TopicsController extends Controller
         $this->authorize('destroy', $topic);
         $topic->delete();
 
-        return redirect()->route('topics.index')->with('message', 'Deleted successfully.');
+        return redirect()->route('topics.index')->with('success', 'Deleted successfully.');
     }
     /**
      * Topic upload image.

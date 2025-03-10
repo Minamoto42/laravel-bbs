@@ -16,7 +16,7 @@ class ReplyFactory extends Factory
         $updatedAt = (rand(0, 1) ? $createdAt->clone()->addHours(rand(1, 48)) : $createdAt); // 有一定概率相同
 
         return [
-            'content' => $this->faker->sentence(),
+            'message' => $this->faker->sentence(),
             'topic_id' => rand(1, 100),
             'user_id' => rand(1, 10),
             'created_at' => $createdAt,
