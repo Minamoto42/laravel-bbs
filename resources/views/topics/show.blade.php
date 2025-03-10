@@ -7,9 +7,8 @@
 @section('content')
 
     <div class="row">
-
         <div class="col-lg-3 col-md-3 hidden-sm hidden-xs author-info">
-            <div class="card ">
+            <div class="card">
                 <div class="card-body">
                     <div class="text-center">
                         Author：{{ $topic->user->name }}
@@ -18,8 +17,7 @@
                     <div class="media">
                         <div align="center">
                             <a href="{{ route('users.show', $topic->user->id) }}">
-                                <img class="thumbnail img-fluid" src="{{ $topic->user->avatar }}" width="300px"
-                                     height="300px" alt="user's avatar">
+                                <img class="thumbnail img-fluid" src="{{ $topic->user->avatar }}" width="300px" height="300px" alt="user's avatar">
                             </a>
                         </div>
                     </div>
@@ -28,15 +26,14 @@
         </div>
 
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 topic-content">
-            <div class="card ">
+            <div class="card">
                 <div class="card-body">
                     <h1 class="text-center mt-3 mb-3">
                         {{ $topic->title }}
                     </h1>
 
                     <div class="article-meta text-center text-secondary">
-                        {{ $topic->created_at->diffForHumans() }}
-                        ⋅
+                        {{ $topic->created_at->diffForHumans() }} ⋅
                         <i class="far fa-comment"></i>
                         {{ $topic->reply_count }}
                     </div>
@@ -48,12 +45,10 @@
                     @can('update', $topic)
                         <div class="operate">
                             <hr>
-                            <a href="{{ route('topics.edit', $topic->id) }}" class="btn btn-outline-secondary btn-sm"
-                               role="button">
+                            <a href="{{ route('topics.edit', $topic->id) }}" class="btn btn-outline-secondary btn-sm" role="button">
                                 <i class="far fa-edit"></i> Edit
                             </a>
-                            <form action="{{ route('topics.destroy', $topic->id) }}" method="post"
-                                  style="display: inline-block"
+                            <form action="{{ route('topics.destroy', $topic->id) }}" method="post" style="display: inline-block"
                                   onsubmit="return confirm('Are you sure you want to delete this post?')">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -71,10 +66,14 @@
             <div class="card topic-reply mt-4">
                 <div class="card-body">
                     @includeWhen(Auth::check(), 'topics._reply_box', ['topic' => $topic])
-                    @include('topics._reply_list', ['replies' => $topic->replies()->with('user')->get()])
+                    {{-- 预加载用户及子回复，并传递 $topic --}}
+                    @include('topics._reply_list', [
+                        'replies' => $topic->replies()->with(['user', 'children.user'])->orderBy('created_at', 'desc')->get(),
+                        'topic' => $topic
+                    ])
                 </div>
             </div>
-
         </div>
     </div>
+
 @stop

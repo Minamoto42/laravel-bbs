@@ -28,6 +28,7 @@ class TopicsController extends Controller
 
     /**
      * Show topics list.
+     *
      * @param Request $request
      * @param Topic $topic
      *
@@ -44,12 +45,20 @@ class TopicsController extends Controller
     /**
      * Show topic detail.
      *
+     * 修改后在显示话题详情时预加载回复数据及其子回复（楼中楼）
+     *
      * @param Topic $topic
      * @return Factory|View|Application
      */
     public function show(Topic $topic): Factory|View|Application
     {
-        return view('topics.show', compact('topic'));
+        // 预加载回复的用户和子回复的用户信息，按创建时间降序排列
+        $replies = $topic->replies()
+            ->with(['user', 'children.user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('topics.show', compact('topic', 'replies'));
     }
 
     /**
@@ -83,10 +92,10 @@ class TopicsController extends Controller
      * Display edit topic form.
      *
      * @param Topic $topic
-     * @return Application|Factory|View
+     * @return Factory|View|Application
      * @throws AuthorizationException
      */
-    public function edit(Topic $topic): View|Factory|Application
+    public function edit(Topic $topic): Factory|View|Application
     {
         $this->authorize('update', $topic);
         $categories = Category::all();
@@ -123,6 +132,7 @@ class TopicsController extends Controller
 
         return redirect()->route('topics.index')->with('success', 'Deleted successfully.');
     }
+
     /**
      * Topic upload image.
      *

@@ -3,34 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-/**
- * Class Reply
- * @package App\Models
- *
- * @property int id
- * @property string message
- * @property int topic_id
- * @property int user_id
- * @property Topic topic
- * @property User user
- */
 class Reply extends Model
 {
     use HasFactory;
 
     /**
-     * The attributes that are mass assignable.
+     * 可以批量赋值的字段
      *
-     * @var array
+     * 这里除了 'message' 外，增加了 'parent_id'，
+     * 如果需要在 store 中一次性写入 topic_id，也可将 'topic_id' 加入其中。
      */
-    protected $fillable = ['message'];
+    protected $fillable = [
+        'message',
+        'parent_id',
+        // 'topic_id', // 如有需要，可以在此处开启
+    ];
 
     /**
-     * A reply belongs to a topic.
-     *
-     * @return BelongsTo
+     * 所属话题
      */
     public function topic(): BelongsTo
     {
@@ -38,9 +31,7 @@ class Reply extends Model
     }
 
     /**
-     * A reply belongs to a user.
-     *
-     * @return BelongsTo
+     * 作者（用户）
      */
     public function user(): BelongsTo
     {
@@ -48,12 +39,25 @@ class Reply extends Model
     }
 
     /**
-     * Scope function to get the recent replies.
-     *
-     * @param $query
-     * @return mixed
+     * 父回复（若 parent_id=0 则表示无父回复，为顶级回复）
      */
-    public function scopeRecent($query): mixed
+    public function parent()
+    {
+        return $this->belongsTo(self::class, 'parent_id');
+    }
+
+    /**
+     * 子回复（楼中楼）
+     */
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
+    /**
+     * 按创建时间降序获取回复
+     */
+    public function scopeRecent($query)
     {
         return $query->orderBy('created_at', 'desc');
     }
