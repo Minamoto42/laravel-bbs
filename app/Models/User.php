@@ -9,7 +9,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
+use Lab404\Impersonate\Models\Impersonate;
 use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Class User
@@ -28,7 +30,7 @@ use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, MustVerifyEmailTrait;
+    use HasApiTokens, HasFactory, MustVerifyEmailTrait, HasRoles, Impersonate;
 
     use Notifiable {
         notify as protected laravelNotify;

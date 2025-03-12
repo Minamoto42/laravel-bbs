@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Mews\Captcha\Captcha;
@@ -84,3 +85,7 @@ Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]
 
 // 通知相关的路由
 Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);
+
+// 模拟登录，用来测试 RBAC
+Route::get('/impersonate/{id}', [UsersController::class, 'impersonateUser'])->name('impersonate');
+Route::get('/stop-impersonating', [UsersController::class, 'stopImpersonating'])->name('stopImpersonating');

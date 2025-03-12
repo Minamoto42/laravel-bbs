@@ -51,7 +51,10 @@ class TopicsController extends Controller
      * @return Factory|View|Application
      */
     public function show(Topic $topic): Factory|View|Application
-    {
+    {   $replies = $topic->replies;
+        foreach ($replies as $reply) {
+            dd($reply->children);
+        }
         // 预加载回复的用户和子回复的用户信息，按创建时间降序排列
         $replies = $topic->replies()
             ->with(['user', 'children.user'])
