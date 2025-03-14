@@ -23,4 +23,5 @@ class ReplyFactory extends Factory
             'updated_at' => $updatedAt,
         ];
     }
+
 }

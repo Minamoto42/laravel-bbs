@@ -8,7 +8,7 @@
             <label for="message"></label>
             <textarea class="form-control" name="message" id="message" rows="3" placeholder="Share your thoughts."></textarea>
         </div>
-        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-share mr-1"></i> Reply</button>
+        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-share me-1"></i> Reply</button>
     </form>
 </div>
 

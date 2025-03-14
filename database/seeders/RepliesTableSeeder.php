@@ -31,6 +31,8 @@ class RepliesTableSeeder extends Seeder
                 ]);
             }
         }
+        \Log::info("为回复 {$reply->id} 生成 {$childCount} 个子回复");
+
 
         // 额外生成一些 parent_id = 1 的楼中楼回复（回复 id 为 1 的顶级回复）
         $parentReply = Reply::find(1);

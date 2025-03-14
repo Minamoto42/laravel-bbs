@@ -19,7 +19,7 @@
     </ul>
 
 @else
-    <div class="empty-block">No replies yet.</div>
+<div class="empty-block mt-4 ms-3">No replies yet.</div>
 @endif
 
 {{-- 分页 --}}

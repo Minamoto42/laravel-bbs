@@ -22,6 +22,9 @@ class ReplyObserver
     public function created(Reply $reply): void
     {
         $reply->topic->updateReplyCount();
+
+        // Notify the author of the topic if the reply is not from the author.
+        // 给「回复(replies)」的「话题(topics)」的「作者(users)」发送通知
         if ($reply->user_id !== $reply->topic->user_id) {
             $reply->topic->user->notify(new TopicReplied($reply));
         }
@@ -38,6 +41,8 @@ class ReplyObserver
     {
         $reply->message = clean($reply->message, 'user_topic_body');
 
+        // 在这里我们重新去验证回复的内容, 因为可能遇到 xss 攻击的问题我们过滤完了之后内容为空
+        // <script>alert('This is dangerous!!!!')</script>
         $validator = Validator::make($reply->toArray(), [
             'message' => 'required|min:2',
         ]);

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Handlers\ImageUploadHandler;
 use App\Http\Requests\Request;
-use App\Models\Topic;
 use App\Models\Category;
+use App\Models\Topic;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -31,7 +31,6 @@ class TopicsController extends Controller
      *
      * @param Request $request
      * @param Topic $topic
-     *
      * @return Factory|View|Application
      */
     public function index(Request $request, Topic $topic): Factory|View|Application
@@ -45,23 +44,12 @@ class TopicsController extends Controller
     /**
      * Show topic detail.
      *
-     * 修改后在显示话题详情时预加载回复数据及其子回复（楼中楼）
-     *
      * @param Topic $topic
      * @return Factory|View|Application
      */
     public function show(Topic $topic): Factory|View|Application
-    {   $replies = $topic->replies;
-        foreach ($replies as $reply) {
-            dd($reply->children);
-        }
-        // 预加载回复的用户和子回复的用户信息，按创建时间降序排列
-        $replies = $topic->replies()
-            ->with(['user', 'children.user'])
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('topics.show', compact('topic', 'replies'));
+    {
+        return view('topics.show', compact('topic'));
     }
 
     /**
@@ -95,10 +83,10 @@ class TopicsController extends Controller
      * Display edit topic form.
      *
      * @param Topic $topic
-     * @return Factory|View|Application
+     * @return Application|Factory|View
      * @throws AuthorizationException
      */
-    public function edit(Topic $topic): Factory|View|Application
+    public function edit(Topic $topic): View|Factory|Application
     {
         $this->authorize('update', $topic);
         $categories = Category::all();

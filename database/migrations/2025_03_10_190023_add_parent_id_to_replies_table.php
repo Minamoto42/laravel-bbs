@@ -4,20 +4,28 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddParentIdToRepliesTable extends Migration
-{
-    public function up()
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up(): void
     {
         Schema::table('replies', function (Blueprint $table) {
-            // 增加 parent_id 字段，默认为 0，代表顶级回复
-            $table->unsignedBigInteger('parent_id')->default(0)->index()->after('id');
+            $table->integer('parent_id')->unsigned()->nullable(false)->default(0)->comment('父级 ID')->after('topic_id');
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down(): void
     {
         Schema::table('replies', function (Blueprint $table) {
             $table->dropColumn('parent_id');
         });
     }
-}
+};

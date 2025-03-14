@@ -16,7 +16,7 @@
     </ul>
 
 @else
-    <div class="empty-block">No posts yet.</div>
+<div class="empty-block mt-4 ms-3">No posts yet.</div>
 @endif
 
 {{-- 分页 --}}
