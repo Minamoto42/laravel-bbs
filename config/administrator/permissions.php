@@ -4,8 +4,8 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Auth;
 
 return [
-    'title' => '权限',
-    'single' => '权限',
+    'title' => 'Permissions',
+    'single' => 'Permission',
     'model' => Permission::class,
 
     'permission' => function () {

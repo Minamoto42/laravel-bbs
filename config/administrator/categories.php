@@ -4,8 +4,8 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
 
 return [
-    'title' => '分类',
-    'single' => '分类',
+    'title' => 'Categories',
+    'single' => 'Category',
     'model' => Category::class,
 
     // 对 CRUD 动作的单独权限控制，其他动作不指定默认为通过

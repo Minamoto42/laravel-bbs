@@ -89,3 +89,6 @@ Route::resource('notifications', 'NotificationsController', ['only' => ['index']
 // 模拟登录，用来测试 RBAC
 Route::get('/impersonate/{id}', [UsersController::class, 'impersonateUser'])->name('impersonate');
 Route::get('/stop-impersonating', [UsersController::class, 'stopImpersonating'])->name('stopImpersonating');
+
+// 没有权限访问后台的提示页面
+Route::get('permission-denied', 'PagesController@permissionDenied')->name('permission-denied');

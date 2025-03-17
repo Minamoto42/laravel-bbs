@@ -3,8 +3,8 @@
 use App\Models\Topic;
 
 return [
-    'title' => '话题',
-    'single' => '话题',
+    'title' => 'Topics',
+    'single' => 'topic',
     'model' => Topic::class,
 
     'columns' => [

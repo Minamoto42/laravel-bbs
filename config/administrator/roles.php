@@ -4,8 +4,8 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 
 return [
-    'title' => '角色',
-    'single' => '角色',
+    'title' => 'Roles',
+    'single' => 'Role',
     'model' => Role::class,
 
     'permission' => function () {

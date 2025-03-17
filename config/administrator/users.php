@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Auth;
 
 return [
     // 页面标题
-    'title' => '用户',
+    'title' => 'Users',
 
     // 模型单数，用作页面『新建 $single』
-    'single' => '用户',
+    'single' => 'Users',
 
     // 数据模型，用作数据的 CRUD
     'model' => User::class,
