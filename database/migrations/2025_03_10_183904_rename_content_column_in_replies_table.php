@@ -25,7 +25,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('replies', function (Blueprint $table) {
-            $table->renameColumn('content', 'message'); // Rename the `message` column to `content`
+            $table->renameColumn('message', 'content'); // Rename the `message` column to `content`
         });
     }
 };

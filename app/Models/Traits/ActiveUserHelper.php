@@ -27,7 +27,7 @@
      protected int $user_number = 6; // 取出用户数量
  
      // 缓存相关配置
-     protected string $cache_key = 'LuStormstoutBBS202501-active_users';
+     protected string $cache_key = 'Minamoto-active_users';
      protected int $cache_expire_in_seconds = 65 * 60; // 缓存过期时间 65 分钟
  
      /**
